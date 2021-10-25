@@ -1,30 +1,15 @@
-class Celsius: 
-    def __init__(self, temperature=0):
-        self.temperature = temperature
+class Balance():
+    def __init__(self, balance=0):
+        self.balance = balance
+    def check(self):
+        print(self.balance)
+
+class child(Balance):
+    def __init__(self, balance):
+        super(child, self).__init__(balance)
     
-    def to_fahrenheit(self):
-        return (self.temperature * 1.8) + 32
-    @property
-    def temperature(self):
-        return self._temperature
-    @temperature.setter
-    def temperature(self, value):
-        if value < -300:
-            print("can not do it")
-        else:
-            self._temperature = value
+    def go(self):
+        super(child, self).check()
 
-    @property
-    def unW(self):
-        return 1
-    
-
-human = Celsius()
-
-# # set the temperature
-# human.temperature = -400
-
-# print(human.to_fahrenheit())
-
-print(human)
-
+li = child(8)
+li.go()
