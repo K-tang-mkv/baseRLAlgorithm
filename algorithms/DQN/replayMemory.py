@@ -5,20 +5,22 @@
 # observes. 
 # 
 
-from collections import namedtupe
+from collections import namedtuple, deque
 import random   
 
 # function namedtupe will return a subclass of tuple, namedtupe, which is the same as tuple with the name
-Transition = namedtupe('Transition', ('state', 'action', 'next_state', 'reward'))
+Transition = namedtuple('Transition', ('state', 'action', 'next_state', 'reward'))
 
 # Another class we need is the replay memory class which stores transitions and has a method .sample() which
 # can be used for us to select a sample (transition) from the replay memory randomly
+
+
 class ReplayMemory(object):
-    def __init__(self, transitions):
-        self.transitions = transitions 
+    def __init__(self, capacity):
+        self.transitions = deque([], maxlen=capacity) 
     
-    def putMemory(self, transition):
-        self.transitions.append(transition)
+    def push(self, *args):
+        self.transitions.append(Transition(*args))
     
     def sample(self, batch_size):
         # return a number of transitions with the batchSize 

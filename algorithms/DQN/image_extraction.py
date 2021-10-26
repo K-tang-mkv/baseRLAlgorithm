@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import gym 
 
 env = gym.make("CartPole-v1").unwrapped
-
+env.reset()
 resize = T.Compose([T.ToPILImage(),
                     T.Resize(40, interpolation=Image.CUBIC),
                     T.ToTensor()])
@@ -56,12 +56,13 @@ def get_screen():
     # Resize, add a batch dimension
     return resize(screen).unsqueeze(0)
 
-env.reset()
-plt.figure()
-plt.imshow(get_screen().cpu().squeeze(0).permute(1, 2, 0).numpy(),
-           interpolation='none')
-plt.title('Example extracted screen')
-plt.show()
+if __name__ == '__main__':
+    
+    plt.figure()
+    plt.imshow(get_screen().cpu().squeeze(0).permute(1, 2, 0).numpy(),
+            interpolation='none')
+    plt.title('Example extracted screen')
+    plt.show()
     
 
     
