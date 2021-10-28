@@ -51,7 +51,7 @@ def select_action(state):
     steps_done += 1
     # At the begining, choose an action as randomly as posiable
     # After the agent learns a lot, it chooses the action as better as possible
-    if sample > eps_threshold:
+    if sample > 0.1:
         with torch.no_grad():
             return policy_net(state).max(1)[1].view(1, 1)
     else:
@@ -116,13 +116,44 @@ def optimized_model():
         param.grad.data.clamp_(-1, 1)
     optimizer.step()
 
-num_episodes = 100
+def random_play_200():
+    for i_episode in range(100):
+        print(i_episode)
+        env.reset()
+        last_screen = get_screen()
+        current_screen = get_screen()
+        state = current_screen - last_screen
+        while True:
+            action = env.action_space.sample()
+            _, reward, done, _ = env.step(action)
+            action = torch.tensor([[action]], device=device, dtype=torch.long)
+            reward = torch.tensor([reward], device=device)
+
+            # Observe new state
+            last_screen = current_screen
+            current_screen = get_screen()
+            if not done:
+                next_state = current_screen - last_screen
+            else:
+                next_state = None
+
+            # Store the transition in memory
+            memory.push(state, action, next_state, reward)
+            # Move to the next state
+            state = next_state
+            if done: 
+                break
+#random_play_200()
+
+
+num_episodes = 500
 for i_episode in range(num_episodes):
     # Initialize the environment and state
     env.reset()
     last_screen = get_screen()
     current_screen = get_screen()
     state = current_screen - last_screen
+    print(len(memory))
     for t in count():
         # Select and perform an action
         action = select_action(state)
