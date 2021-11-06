@@ -5,4 +5,5 @@ class DQN(object):
         self.image_height = image_height
         self.image_width = image_width
 
+    def select_action(self, state):
         
