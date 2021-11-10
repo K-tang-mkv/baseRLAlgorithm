@@ -2,17 +2,20 @@
 # into replay memory at each step the agent play. Sample a batch of tuples from replay memory 
 # to train the neural network. 
 
-from collections import deque        
+from collections import deque, namedtuple   
 import random 
+
+Experience = namedtuple('experience', ('state', 'action', 'reward', 'next_state'))
+
 class replayMemory(object):
     def __init__(self, capacity):
         self.experiences = deque([], capacity)
 
-    def store(self, experience):
-        self.experiences.append(experience)
+    def append(self, *args):
+        self.experiences.append(Experience(*args))
 
-    def sample(self):
-        random.sample(self.experiences, len(self.experiences)/10)
+    def sample(self, batch_size):
+        return random.sample(self.experiences, batch_size)
     
     def __len__(self):
         return len(self.experiences)
