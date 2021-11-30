@@ -1,6 +1,7 @@
 import gym
-from tensorflow.python.ops.array_ops import NEW_AXIS
-# in this part, we will get the part of cartPole from the whole screen as 
+import numpy as np
+
+# in this part, we will get the part of cartPole from the whole screen as
 # the input for our model
 
 def get_screen(env):
@@ -22,15 +23,18 @@ def get_screen(env):
     cartPole_screen = screen[int(318-size_need):318, int(cartx-size_need/2) : int(cartx+size_need/2)]
     
     # cropping to lower resolution with the shape (78, 78)
-    return cartPole_screen[::2, ::2]
+    return cartPole_screen[::4, ::4] / 255.0
+
+def get_observation(env, mode=None):
+    if mode != "raw_image":
+        return np.array(env.state)
+    else:
+        return get_screen(env)
 
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt 
-    env = gym.make('CartPole-v1')
-    env.reset() # Initialize env to get the initial state
+    env = gym.make("CartPole-v0")
 
-    plt.imshow(get_screen(), 'gray')
-   
-    #plt.savefig('./demo.png')
-    plt.show()
+    env.reset()
+    print(env.state.shape)
+
 
