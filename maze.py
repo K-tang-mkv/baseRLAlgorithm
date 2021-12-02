@@ -29,11 +29,14 @@ class Maze(tk.Tk, object):
     def __init__(self):
         super(Maze, self).__init__()
         self.action_space = ['u', 'd', 'l', 'r']
+        
         self.n_actions = len(self.action_space)
         self.title('maze')
         self.geometry('{0}x{1}'.format(MAZE_H * UNIT, MAZE_H * UNIT))
         self._build_maze()
+        self.state = None 
 
+    
     def _build_maze(self):
         self.canvas = tk.Canvas(self, bg='white',
                            height=MAZE_H * UNIT,
@@ -89,6 +92,7 @@ class Maze(tk.Tk, object):
             origin[0] + 15, origin[1] + 15,
             fill='red')
         # return observation
+        self.state = self.canvas.coords(self.rect)
         return self.canvas.coords(self.rect)
 
     def step(self, action):
@@ -115,15 +119,15 @@ class Maze(tk.Tk, object):
         if s_ == self.canvas.coords(self.oval):
             reward = 1
             done = True
-            s_ = 'terminal'
+            s_ = None
         elif s_ in [self.canvas.coords(self.hell1), self.canvas.coords(self.hell2)]:
             reward = -1
             done = True
-            s_ = 'terminal'
+            s_ = None
         else:
             reward = 0
             done = False
-
+        self.state = s_ 
         return s_, reward, done
 
     def render(self):
@@ -140,6 +144,7 @@ def update(env):
             env.render()
             a = random.randrange(4)
             s, r, done = env.step(a)
+            print(env.state)
             if done:
                 break
 

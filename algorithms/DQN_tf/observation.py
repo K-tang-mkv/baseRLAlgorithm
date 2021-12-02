@@ -27,7 +27,7 @@ def get_screen(env):
 
 def get_observation(env, mode=None):
     if mode != "raw_image":
-        return np.array(env.state)
+        return env.state
     else:
         return get_screen(env)
 
