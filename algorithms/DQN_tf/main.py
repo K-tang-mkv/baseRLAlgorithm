@@ -47,7 +47,7 @@ if __name__ == "__main__":
     random_play_200(agent.env, agent, episodes_rewards)
     print("random over!!!!!!")
     # play 100 episodes
-    for i in range(100):
+    for i in range(300):
         # at the begining of each episode, reset the env
         last_time = 0
         env.reset()

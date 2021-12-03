@@ -62,7 +62,7 @@ class DQN_agent(object):
         #q_target = q_target.reshape(-1, q_target.shape[1])
         self.model.fit(current_state_batch, q_expected_values)
 
-        self.epsilon = self.epsilon - 0.0001 if self.epsilon > \
+        self.epsilon = self.epsilon - 0.0004 if self.epsilon > \
                                                       0.1 else 0.1
 
     def select_action(self, state):
