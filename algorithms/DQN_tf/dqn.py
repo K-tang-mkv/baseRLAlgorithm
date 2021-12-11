@@ -35,7 +35,7 @@ class DQN_agent(object):
         self.env = env
 
     def learn(self):
-        if len(self.replayMemory) < self.batch_size * 10:
+        if len(self.replayMemory) < self.batch_size :
             return
 
         training_set = self.replayMemory.sample(self.batch_size)
@@ -62,7 +62,7 @@ class DQN_agent(object):
         #q_target = q_target.reshape(-1, q_target.shape[1])
         self.model.fit(current_state_batch, q_expected_values)
 
-        self.epsilon = self.epsilon - 0.0004 if self.epsilon > \
+        self.epsilon = self.epsilon - 0.004 if self.epsilon > \
                                                       0.1 else 0.1
 
     def select_action(self, state):
@@ -72,6 +72,8 @@ class DQN_agent(object):
         state = state.reshape((1, *state.shape))
         if sample > self.epsilon:
             y = self.model.predict(state)
+            if (y[0] == y).all():
+                return random.randrange(self.env.n_actions)
             return int(tf.argmax(y, 1))
         else:
             return random.randrange(self.env.n_actions)

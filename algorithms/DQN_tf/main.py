@@ -44,7 +44,7 @@ if __name__ == "__main__":
     agent = DQN_agent(128, replayMemory, env)
 
     episodes_rewards = []
-    random_play_200(agent.env, agent, episodes_rewards)
+    #random_play_200(agent.env, agent, episodes_rewards)
     print("random over!!!!!!")
     # play 100 episodes
     for i in range(300):
